@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业补贴政策周报</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#F3F4F6; color:#1F2937; line-height:1.6; }
+
+.container { max-width:880px; margin:0 auto; padding:32px 20px 60px; }
+
+.report-header { background:#fff; border-radius:12px; padding:28px 32px; margin-bottom:16px; border:0.5px solid #E5E7EB; }
+.report-header h1 { font-size:22px; font-weight:600; color:#111827; margin-bottom:4px; }
+.report-header .meta { font-size:13px; color:#6B7280; }
+.report-header .meta span { margin-right:20px; }
+
+.stats-row { display:flex; gap:12px; margin-bottom:16px; }
+.stat-card { flex:1; background:#fff; border-radius:10px; padding:16px 20px; border:0.5px solid #E5E7EB; }
+.stat-card .label { font-size:12px; color:#6B7280; margin-bottom:4px; }
+.stat-card .value { font-size:26px; font-weight:600; }
+.stat-card.danger .value { color:#DC2626; }
+.stat-card.warning .value { color:#D97706; }
+.stat-card.success .value { color:#059669; }
+
+.filter-bar { background:#fff; border-radius:10px; padding:12px 16px; margin-bottom:16px; border:0.5px solid #E5E7EB; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.filter-bar .label { font-size:12px; color:#9CA3AF; margin-right:4px; flex-shrink:0; }
+.filter-tag { font-size:12px; padding:5px 14px; border-radius:20px; border:0.5px solid #D1D5DB; background:#fff; color:#374151; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+.filter-tag:hover { border-color:#9CA3AF; }
+.filter-tag.active { background:#185FA5; color:#fff; border-color:#185FA5; }
+
+.alert-banner { background:#FEF2F2; border:0.5px solid #FECACA; border-radius:10px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.alert-banner .alert-dot { width:8px; height:8px; border-radius:50%; background:#EF4444; flex-shrink:0; }
+.alert-banner .alert-text { font-size:13px; color:#991B1B; font-weight:500; }
+.alert-banner .alert-count { font-weight:600; }
+
+.policy-list { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
+.policy-list .empty { text-align:center; padding:48px 20px; color:#9CA3AF; font-size:14px; }
+
+.policy-card { background:#fff; border-radius:10px; overflow:hidden; border:0.5px solid #E5E7EB; transition:box-shadow 0.15s; }
+.policy-card:hover { box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+.policy-card .card-body { display:flex; padding:18px 20px; gap:16px; }
+.policy-card .indicator { width:4px; min-height:80px; border-radius:2px; flex-shrink:0; align-self:stretch; }
+.policy-card .indicator.urgent { background:#EF4444; }
+.policy-card .indicator.watch { background:#F59E0B; }
+.policy-card .indicator.normal { background:#10B981; }
+.policy-card .card-main { flex:1; min-width:0; }
+.policy-card .card-title { font-size:15px; font-weight:600; color:#111827; margin-bottom:6px; line-height:1.4; }
+.policy-card .card-source { font-size:12px; color:#9CA3AF; margin-bottom:10px; }
+.policy-card .card-source span+span::before { content:"\00b7"; margin:0 8px; }
+.policy-card .card-details { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px 24px; }
+.policy-card .detail-item { font-size:13px; color:#4B5563; }
+.policy-card .detail-item strong { font-weight:500; color:#374151; }
+.policy-card .card-action { text-align:right; padding:0 20px 16px; }
+.policy-card .card-action a { font-size:13px; color:#185FA5; text-decoration:none; font-weight:500; }
+.policy-card .card-action a:hover { text-decoration:underline; }
+
+.tag-row { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+.tag { font-size:11px; padding:2px 10px; border-radius:12px; font-weight:500; white-space:nowrap; }
+.tag-sub { background:#EFF6FF; color:#2563EB; }
+.tag-she { background:#F0FDF4; color:#059669; }
+.tag-train { background:#FFFBEB; color:#D97706; }
+.tag-rd { background:#F5F3FF; color:#7C3AED; }
+.tag-ent { background:#FFF7ED; color:#EA580C; }
+.tag-cert { background:#ECFDF5; color:#059669; }
+.tag-loan { background:#FEFCE8; color:#CA8A04; }
+.tag-urgent { background:#FEE2E2; color:#DC2626; }
+.tag-watch { background:#FEF3C7; color:#D97706; }
+.tag-normal { background:#D1FAE5; color:#059669; }
+
+.report-footer { background:#fff; border-radius:10px; padding:20px 24px; border:0.5px solid #E5E7EB; font-size:12px; color:#9CA3AF; line-height:1.8; }
+.report-footer strong { color:#6B7280; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="report-header">
+  <h1>企业补贴政策周报</h1>
+  <div class="meta">
+    <span>第 30 期</span>
+    <span>生成时间：2026年7月28日</span>
+    <span>覆盖范围：全国 + 广东省</span>
+    <span>行业：制造业 · 中小微企业</span>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="label">本周共采集</div>
+    <div class="value">6</div>
+    <div class="label">条政策</div>
+  </div>
+  <div class="stat-card danger">
+    <div class="label">即将截止</div>
+    <div class="value">2</div>
+    <div class="label">7 天内到期</div>
+  </div>
+  <div class="stat-card warning">
+    <div class="label">需关注</div>
+    <div class="value">3</div>
+    <div class="label">30 天内到期</div>
+  </div>
+  <div class="stat-card success">
+    <div class="label">长期有效</div>
+    <div class="value">1</div>
+    <div class="label">条政策</div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="label">筛选：</span>
+  <div class="filter-tag active" onclick="filterPolicies('all', this)">全部</div>
+  <div class="filter-tag" onclick="filterPolicies('稳岗补贴', this)">稳岗补贴</div>
+  <div class="filter-tag" onclick="filterPolicies('社保补贴', this)">社保补贴</div>
+  <div class="filter-tag" onclick="filterPolicies('培训补贴', this)">培训补贴</div>
+  <div class="filter-tag" onclick="filterPolicies('研发补助', this)">研发补助</div>
+  <div class="filter-tag" onclick="filterPolicies('认定奖励', this)">认定奖励</div>
+  <div class="filter-tag" onclick="filterPolicies('贷款贴息', this)">贷款贴息</div>
+</div>
+
+<div class="alert-banner">
+  <div class="alert-dot"></div>
+  <div class="alert-text">以下 <span class="alert-count">2</span> 条政策即将截止，请尽快安排申报</div>
+</div>
+
+<div class="policy-list" id="policyList">
+
+<div class="policy-card" data-tags="稳岗补贴">
+  <div class="card-body">
+    <div class="indicator urgent"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-sub">稳岗补贴</span>
+        <span class="tag tag-urgent">7 天内截止</span>
+      </div>
+      <div class="card-title">广东省中小微企业失业保险稳岗返还</div>
+      <div class="card-source"><span>广东省人社厅、财政厅</span><span>2026年7月18日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>按上年度实际缴纳失业保险费的 60% 返还</div>
+        <div class="detail-item"><strong>适用条件：</strong>参保满 12 个月、裁员率不高于全国城镇调查失业率</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年8月5日</div>
+        <div class="detail-item"><strong>申请方式：</strong>省人社厅网上服务平台在线申报</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+<div class="policy-card" data-tags="社保补贴">
+  <div class="card-body">
+    <div class="indicator urgent"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-she">社保补贴</span>
+        <span class="tag tag-urgent">5 天内截止</span>
+      </div>
+      <div class="card-title">深圳市招用就业困难人员社保补贴</div>
+      <div class="card-source"><span>深圳市人社局</span><span>2026年6月15日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>按实际缴纳社会保险费的 100% 给予</div>
+        <div class="detail-item"><strong>适用条件：</strong>招用经认定的就业困难人员，签订 1 年以上劳动合同并缴纳社保</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年8月3日</div>
+        <div class="detail-item"><strong>申请方式：</strong>深圳市公共就业服务平台线上申报</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+<div class="policy-card" data-tags="培训补贴">
+  <div class="card-body">
+    <div class="indicator watch"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-train">培训补贴</span>
+        <span class="tag tag-watch">30 天内截止</span>
+      </div>
+      <div class="card-title">浙江省企业新型学徒制培训补贴实施办法</div>
+      <div class="card-source"><span>浙江省人社厅</span><span>2026年7月10日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>每人每年 5,000-8,000 元</div>
+        <div class="detail-item"><strong>适用条件：</strong>企业与培训机构合作，签订学徒培养协议，培训周期 1-2 年</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年9月30日</div>
+        <div class="detail-item"><strong>申请方式：</strong>浙江政务服务网线上申报</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+<div class="policy-card" data-tags="研发补助">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-rd">研发补助</span>
+        <span class="tag tag-normal">长期有效</span>
+      </div>
+      <div class="card-title">科技型中小企业研发费用加计扣除政策</div>
+      <div class="card-source"><span>财政部、税务总局、科技部</span><span>2026年起长期执行</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>研发费用 100% 加计扣除（即每 100 万元研发支出可抵 175 万元应纳税所得额）</div>
+        <div class="detail-item"><strong>适用条件：</strong>科技型中小企业认定，有实质研发活动</div>
+        <div class="detail-item"><strong>截止时间：</strong>长期有效，年度汇算清缴时申报</div>
+        <div class="detail-item"><strong>申请方式：</strong>企业所得税年度申报时填报</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+<div class="policy-card" data-tags="认定奖励">
+  <div class="card-body">
+    <div class="indicator watch"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-cert">认定奖励</span>
+        <span class="tag tag-watch">30 天内截止</span>
+      </div>
+      <div class="card-title">广东省高新技术企业认定及奖励资金申报</div>
+      <div class="card-source"><span>广东省科技厅</span><span>2026年7月5日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>一次性奖励 30-100 万元（按认定级别）</div>
+        <div class="detail-item"><strong>适用条件：</strong>拥有核心知识产权、研发人员占比 &ge; 10%、高新收入占比 &ge; 60%</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年8月31日</div>
+        <div class="detail-item"><strong>申请方式：</strong>省科技厅官网"高新技术企业认定"入口</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+<div class="policy-card" data-tags="贷款贴息">
+  <div class="card-body">
+    <div class="indicator watch"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-loan">贷款贴息</span>
+        <span class="tag tag-watch">即将开放申报</span>
+      </div>
+      <div class="card-title">全国小微企业创业担保贷款财政贴息</div>
+      <div class="card-source"><span>财政部、人社部</span><span>2026年7月22日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>最高 300 万元贷款，财政贴息 50%</div>
+        <div class="detail-item"><strong>适用条件：</strong>小微企业，当年新招用符合条件人员达现有职工 15% 以上</div>
+        <div class="detail-item"><strong>截止时间：</strong>常年受理，预计8月开放本年度第二批次</div>
+        <div class="detail-item"><strong>申请方式：</strong>当地人社部门就业促进科</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="#">查看政策原文 &rarr;</a></div>
+</div>
+
+</div>
+
+<div class="report-footer">
+  <strong>说明：</strong>本报告由自动化系统自动采集生成，数据来源包括人社部、工信部、科技部、财政部等部委网站及各省人社/工信厅官网。<br>
+  <strong>筛选条件：</strong>地区 = 全国 + 广东省 | 行业 = 制造业 | 企业类型 = 中小微企业。<br>
+  <strong>免责提示：</strong>政策内容以官方原文为准，请以链接中的官方文件核验后再进行申报操作。
+</div>
+
+</div>
+
+<script>
+function filterPolicies(tag, el) {
+  document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const cards = document.querySelectorAll('.policy-card');
+  let visible = 0;
+  cards.forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.style.display = '';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  const emptyEl = document.getElementById('emptyHint');
+  if (visible === 0) {
+    if (!emptyEl) {
+      const div = document.createElement('div');
+      div.id = 'emptyHint';
+      div.className = 'empty';
+      div.textContent = '该分类暂无匹配政策';
+      document.getElementById('policyList').appendChild(div);
+    }
+    emptyEl.style.display = '';
+  } else {
+    if (emptyEl) emptyEl.style.display = 'none';
+  }
+}
+</script>
+
+</body>
+</html>

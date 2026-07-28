@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业补贴政策周报</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:#F3F4F6; color:#1F2937; line-height:1.6; }
+
+.container { max-width:880px; margin:0 auto; padding:32px 20px 60px; }
+
+.report-header { background:#fff; border-radius:12px; padding:28px 32px; margin-bottom:16px; border:0.5px solid #E5E7EB; }
+.report-header h1 { font-size:22px; font-weight:600; color:#111827; margin-bottom:4px; }
+.report-header .meta { font-size:13px; color:#6B7280; }
+.report-header .meta span { margin-right:20px; }
+
+.stats-row { display:flex; gap:12px; margin-bottom:16px; }
+.stat-card { flex:1; background:#fff; border-radius:10px; padding:16px 20px; border:0.5px solid #E5E7EB; }
+.stat-card .label { font-size:12px; color:#6B7280; margin-bottom:4px; }
+.stat-card .value { font-size:26px; font-weight:600; }
+.stat-card.danger .value { color:#DC2626; }
+.stat-card.warning .value { color:#D97706; }
+.stat-card.success .value { color:#059669; }
+
+.filter-bar { background:#fff; border-radius:10px; padding:12px 16px; margin-bottom:16px; border:0.5px solid #E5E7EB; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.filter-bar .label { font-size:12px; color:#9CA3AF; margin-right:4px; flex-shrink:0; }
+.filter-tag { font-size:12px; padding:5px 14px; border-radius:20px; border:0.5px solid #D1D5DB; background:#fff; color:#374151; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+.filter-tag:hover { border-color:#9CA3AF; }
+.filter-tag.active { background:#185FA5; color:#fff; border-color:#185FA5; }
+
+.alert-banner { background:#F0FDF4; border:0.5px solid #A7F3D0; border-radius:10px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:flex-start; gap:10px; }
+.alert-banner .alert-dot { width:8px; height:8px; border-radius:50%; background:#10B981; flex-shrink:0; margin-top:6px; }
+.alert-banner .alert-text { font-size:13px; color:#065F46; }
+.alert-banner .alert-count { font-weight:600; }
+
+.policy-list { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
+.policy-list .empty { text-align:center; padding:48px 20px; color:#9CA3AF; font-size:14px; }
+
+.policy-card { background:#fff; border-radius:10px; overflow:hidden; border:0.5px solid #E5E7EB; transition:box-shadow 0.15s; }
+.policy-card:hover { box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+.policy-card .card-body { display:flex; padding:18px 20px; gap:16px; }
+.policy-card .indicator { width:4px; min-height:80px; border-radius:2px; flex-shrink:0; align-self:stretch; }
+.policy-card .indicator.urgent { background:#EF4444; }
+.policy-card .indicator.watch { background:#F59E0B; }
+.policy-card .indicator.normal { background:#10B981; }
+.policy-card .card-main { flex:1; min-width:0; }
+.policy-card .card-title { font-size:15px; font-weight:600; color:#111827; margin-bottom:6px; line-height:1.4; }
+.policy-card .card-source { font-size:12px; color:#9CA3AF; margin-bottom:10px; }
+.policy-card .card-source span+span::before { content:"\00b7"; margin:0 8px; }
+.policy-card .card-details { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:6px 24px; }
+.policy-card .detail-item { font-size:13px; color:#4B5563; }
+.policy-card .detail-item strong { font-weight:500; color:#374151; }
+.policy-card .card-action { text-align:right; padding:0 20px 16px; }
+.policy-card .card-action a { font-size:13px; color:#185FA5; text-decoration:none; font-weight:500; }
+.policy-card .card-action a:hover { text-decoration:underline; }
+
+.tag-row { display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap; align-items:center; }
+.tag { font-size:11px; padding:2px 10px; border-radius:12px; font-weight:500; white-space:nowrap; }
+.tag-sub { background:#EFF6FF; color:#2563EB; }
+.tag-she { background:#F0FDF4; color:#059669; }
+.tag-train { background:#FFFBEB; color:#D97706; }
+.tag-rd { background:#F5F3FF; color:#7C3AED; }
+.tag-ent { background:#FFF7ED; color:#EA580C; }
+.tag-cert { background:#ECFDF5; color:#059669; }
+.tag-loan { background:#FEFCE8; color:#CA8A04; }
+.tag-mix { background:#F0F9FF; color:#0EA5E9; }
+.tag-tax { background:#FDF2F8; color:#DB2777; }
+.tag-urgent { background:#FEE2E2; color:#DC2626; }
+.tag-watch { background:#FEF3C7; color:#D97706; }
+.tag-normal { background:#D1FAE5; color:#059669; }
+.tag-region { background:#E0F2FE; color:#0369A1; }
+
+.match-badge { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; padding:3px 10px; border-radius:14px; white-space:nowrap; }
+.match-badge.match-high { background:#D1FAE5; color:#065F46; }
+.match-badge.match-mid { background:#FEF3C7; color:#92400E; }
+.match-badge.match-low { background:#F3F4F6; color:#6B7280; }
+
+.report-footer { background:#fff; border-radius:10px; padding:20px 24px; border:0.5px solid #E5E7EB; font-size:12px; color:#9CA3AF; line-height:1.8; }
+.report-footer strong { color:#6B7280; }
+
+.policy-num { font-size:11px; color:#9CA3AF; margin-bottom:2px; }
+
+@media (max-width:600px) {
+  .stats-row { flex-wrap:wrap; }
+  .stat-card { flex:1 1 40%; }
+  .container { padding:16px 12px 40px; }
+  .report-header { padding:20px; }
+  .policy-card .card-details { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="report-header">
+  <h1>企业补贴政策周报</h1>
+  <div class="meta">
+    <span>第 2 期（更新版）</span>
+    <span>生成时间：2026年7月28日</span>
+    <span>覆盖范围：全国 + 浙江省 + 杭州市西湖区</span>
+  </div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="label">本期收录</div>
+    <div class="value">10</div>
+    <div class="label">条政策</div>
+  </div>
+  <div class="stat-card danger">
+    <div class="label">年内到期</div>
+    <div class="value">3</div>
+    <div class="label">需安排申报</div>
+  </div>
+  <div class="stat-card warning">
+    <div class="label">新发布</div>
+    <div class="value">5</div>
+    <div class="label">本年度政策</div>
+  </div>
+  <div class="stat-card success">
+    <div class="label">长期有效</div>
+    <div class="value">5</div>
+    <div class="label">条政策</div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="label">筛选：</span>
+  <div class="filter-tag active" onclick="filterPolicies('all', this)">全部</div>
+  <div class="filter-tag" onclick="filterPolicies('稳岗补贴', this)">稳岗补贴</div>
+  <div class="filter-tag" onclick="filterPolicies('人才/扩岗', this)">人才/扩岗</div>
+  <div class="filter-tag" onclick="filterPolicies('培训补贴', this)">培训补贴</div>
+  <div class="filter-tag" onclick="filterPolicies('综合减负', this)">综合减负</div>
+  <div class="filter-tag" onclick="filterPolicies('贷款贴息', this)">贷款贴息</div>
+  <div class="filter-tag" onclick="filterPolicies('认定/研发', this)">认定/研发</div>
+  <div class="filter-tag" onclick="filterPolicies('服务/创业', this)">服务/创业</div>
+</div>
+
+<div class="alert-banner">
+  <div class="alert-dot"></div>
+  <div class="alert-text">本期收录 <span class="alert-count">10</span> 条现行有效政策，覆盖全国·浙江·杭州西湖区。其中 <span class="alert-count">3</span> 条全国性政策期限至 2026 年 12 月 31 日，<span class="alert-count">3</span> 条为西湖区直接发布的区级政策，匹配度最高。建议优先关注。</div>
+</div>
+
+<div class="policy-list" id="policyList">
+
+<!-- 1. 西湖区推动经济高质量发展 -->
+<div class="policy-card" data-tags="综合减负">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-mix">综合减负</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-region">杭州西湖区</span>
+        <span class="match-badge match-high">★★★★★ 95%</span>
+      </div>
+      <div class="policy-num">西政发〔2026〕XX 号</div>
+      <div class="card-title">西湖区推动经济高质量发展的若干政策（2026年版）</div>
+      <div class="card-source"><span>杭州市西湖区人民政府</span><span>2026年3月9日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>关键措施：</strong>深入实施"春晖计划"，为企业降成本减负担；推动社会综合融资成本稳中有降；推进专精特新企业梯度培育</div>
+        <div class="detail-item"><strong>研发支持：</strong>科技型企业规上/规下企业新增研发费用分别超200万/50万元的，按新增研发费给予一定支持</div>
+        <div class="detail-item"><strong>数字化转型：</strong>支持人工智能、商业航天、具身智能、集成电路、高端软件等产业集群；对AI工厂给予分档奖励</div>
+        <div class="detail-item"><strong>特别提示：</strong>注册地在西湖区的企业直接对口，享受区级配套政策叠加省市政策</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.hzxh.gov.cn/col/col1229562124/art/2026/art_1fd9d6b74dae45e7a909f75291741c6f.html" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 2. 西湖区先进制造业大礼包 -->
+<div class="policy-card" data-tags="综合减负">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-mix">综合减负</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-region">杭州西湖区</span>
+        <span class="match-badge match-mid">★★★ 65%</span>
+      </div>
+      <div class="card-title">西湖区先进制造业"政策+基金+空间"三大礼包</div>
+      <div class="card-source"><span>杭州市西湖区人民政府</span><span>2026年1月发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>制造业技改：</strong>总投资1000万元以上技改项目最高可获5000万元资助；一季度产值增量最高500万元激励</div>
+        <div class="detail-item"><strong>创业空间：</strong>2026年计划挂牌出让产业用地21宗、1018亩，新建产业园区及标准厂房投用</div>
+        <div class="detail-item"><strong>金融支持：</strong>区级科创直投基金约14亿元、26支子基金总规模171.81亿元，覆盖企业全生命周期</div>
+        <div class="detail-item"><strong>适用提示：</strong>偏制造业导向，教育培训企业适用度中等；如涉足教育科技产品研发则研发补贴可适用</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.hzxcw.gov.cn/content_46861.html" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 3. 失业保险稳岗返还 -->
+<div class="policy-card" data-tags="稳岗补贴">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-sub">稳岗补贴</span>
+        <span class="tag tag-normal">全年有效</span>
+        <span class="match-badge match-high">★★★★ 82%</span>
+      </div>
+      <div class="policy-num">人社部发〔2026〕39 号</div>
+      <div class="card-title">失业保险稳岗返还政策（2026年延续）</div>
+      <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>中小微企业按上年度实际缴纳失业保险费的 60% 返还；大型企业 30%</div>
+        <div class="detail-item"><strong>适用条件：</strong>参保缴费满 12 个月，不裁员或裁员率不高于城镇调查失业率控制目标（30人以下企业裁员率不高于 20%）</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
+        <div class="detail-item"><strong>申请方式：</strong>"免申即享"，通过后台数据比对主动推送确认</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 4. 一次性扩岗补助 -->
+<div class="policy-card" data-tags="人才/扩岗">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-she">人才/扩岗</span>
+        <span class="tag tag-normal">全年有效</span>
+        <span class="match-badge match-mid">★★★ 58%</span>
+      </div>
+      <div class="policy-num">人社部发〔2026〕39 号（同一文件）</div>
+      <div class="card-title">一次性扩岗补助政策（2026年延续）</div>
+      <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>每招用 1 人不超过 1,500 元</div>
+        <div class="detail-item"><strong>适用条件：</strong>招用毕业年度及离校两年内未就业高校毕业生、16-24岁登记失业青年，签劳动合同并足额缴纳社保 3 个月以上</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
+        <div class="detail-item"><strong>申请方式：</strong>向参保地人社部门申请，部分地区支持线上办理</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 5. 技能提升补贴 -->
+<div class="policy-card" data-tags="培训补贴">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-train">培训补贴</span>
+        <span class="tag tag-normal">全年有效</span>
+        <span class="match-badge match-low">★★ 45%</span>
+      </div>
+      <div class="policy-num">人社部发〔2026〕39 号（同一文件）</div>
+      <div class="card-title">技能提升补贴政策（2026年优化版）</div>
+      <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴金额：</strong>参保职工取得证书可申领 1 次补贴；获多项急需紧缺工种证书可额外增加 2 次</div>
+        <div class="detail-item"><strong>适用条件（2026年新变化·突出"证岗相适"）：</strong>证书对应职业中类与所在企业行业一致；或为数字职业（标"S"）证书；或为绿色职业（标"L"）证书；或列入当地急需紧缺职业（工种）目录</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
+        <div class="detail-item"><strong>特别提示：</strong>教育科技公司的技术岗位考取数字职业证书最契合，"证岗相适"条件容易满足</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 6. 浙江省减负降本 -->
+<div class="policy-card" data-tags="综合减负">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-mix">综合减负</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="match-badge match-high">★★★★★ 92%</span>
+      </div>
+      <div class="card-title">浙江省企业减负降本综合政策（2026年版）</div>
+      <div class="card-source"><span>浙江省人民政府办公厅</span><span>2026年1月5日发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>用工成本：</strong>企业拨缴上级工会经费缓减 20%（2025-2026）；给予职业培训补贴；支持建设宿舍型保障性租赁住房</div>
+        <div class="detail-item"><strong>融资成本：</strong>政府性融资担保费率降至 1% 以下，对小微企业差异化费率；拓展无还本续贷至中型企业</div>
+        <div class="detail-item"><strong>其他优惠：</strong>160千瓦以下中小企业低压接入零投资；涉企专项资金加快兑付；提高政府采购中小企业预留份额</div>
+        <div class="detail-item"><strong>截止时间：</strong>2026年1月12日起施行，多项措施延续至 2027 年底</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://hqpt.jxt.zj.gov.cn/zjhqpt/views/policy/detail.html?id=60877" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 7. 杭州市服务券 -->
+<div class="policy-card" data-tags="服务/创业">
+  <div class="card-body">
+    <div class="indicator watch"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-cert">服务/创业</span>
+        <span class="tag tag-watch">需关注</span>
+        <span class="match-badge match-high">★★★★ 82%</span>
+      </div>
+      <div class="policy-num">杭经信联中小〔2026〕34 号</div>
+      <div class="card-title">杭州市中小微企业服务券管理办法（2026年升级版）</div>
+      <div class="card-source"><span>杭州市经信局、财政局</span><span>2026年5月13日发布，6月25日启动申领</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>补贴方式：</strong>2026年总额 1,000 万元，114家服务机构 257 个服务产品已上架"杭企服"平台</div>
+        <div class="detail-item"><strong>补贴额度：</strong>中小企业 5,000 元/年；创新型中小企业 10,000 元/年；省专精特新/小巨人 20,000 元/年</div>
+        <div class="detail-item"><strong>适用范围：</strong>可用于数字赋能、管理咨询、融资支持、科技创新、人才培育等 10 类服务采购</div>
+        <div class="detail-item"><strong>申请方式：</strong>全程线上，"杭企服"平台发放、使用和兑付（先用先得、用完为止）</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://credit.zj.gov.cn/col/col1229636089/art/2026/art_3e0fa9b0c2b6462dbaf5fe1cb0148b34.html" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 8. 杭州创业担保贷款 -->
+<div class="policy-card" data-tags="贷款贴息">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-loan">贷款贴息</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="match-badge match-high">★★★★ 78%</span>
+      </div>
+      <div class="card-title">杭州市创业担保贷款及贴息政策</div>
+      <div class="card-source"><span>杭州市人社局、财政局</span><span>2026年4月更新执行</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>贷款额度：</strong>个人最高 50 万元；小微企业按招用重点人群人数×20 万元计算，最高 300 万元</div>
+        <div class="detail-item"><strong>贴息力度：</strong>重点人群（在校生/毕业生等）全额贴息；小微企业入驻孵化基地的按 LPR 全额贴息，其他按 LPR-150BP 以上部分贴息</div>
+        <div class="detail-item"><strong>期限：</strong>贴息累计不超过 3 年，次数不超过 3 次。贷款利率不超过 LPR+50BP</div>
+        <div class="detail-item"><strong>申请方式：</strong>先资格认定→银行放款→"先付后贴"，支付宝"就业创业一张图"可查经办网点</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://hznews.hangzhou.com.cn/jingji/content/2026-04/10/content_9203957.htm" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 9. 杭州市创业场地扶持 -->
+<div class="policy-card" data-tags="服务/创业">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-ent">服务/创业</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="match-badge match-mid">★★★ 55%</span>
+      </div>
+      <div class="policy-num">杭人社发〔2025〕XX 号</div>
+      <div class="card-title">杭州市创业场地扶持办法（2026年2月1日起施行）</div>
+      <div class="card-source"><span>杭州市人力资源和社会保障局</span><span>2026年2月1日起施行</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>创业陪跑空间：</strong>入驻经认定的创业陪跑空间，最高享 3 年 50 平方米以内场地租金补贴，最高 3 元/平方米·天</div>
+        <div class="detail-item"><strong>园外创业补贴：</strong>未入驻陪跑空间的创业者也可申请园外创业场地租金补贴，条件略严格</div>
+        <div class="detail-item"><strong>适用条件：</strong>重点人群（大学生/失业/退役等）创办经营实体，创业者持股≥30%，需提供房租支付凭证</div>
+        <div class="detail-item"><strong>适用提示：</strong>如果是自有场地则无需此项；如果在陪跑空间内租赁则高匹配</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://zfgb.hangzhou.gov.cn/15/112220253/t126220253124/530040.shtml" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 10. 科技型中小企业 / 专精特新认定 -->
+<div class="policy-card" data-tags="认定/研发">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-rd">认定/研发</span>
+        <span class="tag tag-normal">常年申报</span>
+        <span class="match-badge match-high">★★★★ 75%</span>
+      </div>
+      <div class="policy-num">国科发〔2026〕/ 杭政函〔2026〕XX 号</div>
+      <div class="card-title">国家科技型中小企业评价 + 杭州市专精特新名城政策</div>
+      <div class="card-source"><span>科技部 / 杭州市政府</span><span>2026年度·常年受理</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>税收优惠：</strong>认定为国家科技型中小企业可享研发费用加计扣除 100%；亏损结转年限由 5 年延长至 10 年</div>
+        <div class="detail-item"><strong>杭州专精特新奖励：</strong>首次认定省专精特新企业奖励 20 万元；省隐形冠军 100 万元；专精特新"小巨人"100 万元</div>
+        <div class="detail-item"><strong>高新技术企业：</strong>杭州市对首次认定高企奖励最高 20 万元，重新认定 10 万元；"新雏鹰"企业 50 万元</div>
+        <div class="detail-item"><strong>特别提示：</strong>教育培训企业若有自主研发的教学系统/技术平台，建议申报科技型中小企业入库</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.hzxcw.gov.cn/content_46615.html" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+</div>
+
+<div class="report-footer">
+  <strong>说明：</strong>本报告由自动化系统采集生成，数据来源为人社部、科技部、国家税务总局、浙江省人民政府、杭州市经信局、杭州市人社局、西湖区人民政府等官方渠道。<br>
+  <strong>筛选范围：</strong>地区 = 全国 + 浙江省 + 杭州市西湖区 | 行业画像 = 教育科技 | 企业类型 = 中小企业。（已排除非杭州西湖区的地方性政策）<br>
+  <strong>匹配度说明：</strong>★★★★★（90%+）= 直接对口，★★★★（75-89%）= 高度匹配，★★★（50-74%）= 可触发，★★（<50%）= 间接关联。<br>
+  <strong>免责提示：</strong>政策内容以官方原文为准，请以本报告提供的官方原文链接核实后开展申报操作。
+</div>
+
+</div>
+
+<script>
+function filterPolicies(tag, el) {
+  document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const cards = document.querySelectorAll('.policy-card');
+  let visible = 0;
+  cards.forEach(card => {
+    if (tag === 'all' || card.dataset.tags.includes(tag)) {
+      card.style.display = '';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  const emptyEl = document.getElementById('emptyHint');
+  if (visible === 0) {
+    if (!emptyEl) {
+      const div = document.createElement('div');
+      div.id = 'emptyHint';
+      div.className = 'empty';
+      div.textContent = '该分类暂无匹配政策，调整筛选条件试试';
+      document.getElementById('policyList').appendChild(div);
+    }
+    emptyEl.style.display = '';
+  } else {
+    if (emptyEl) emptyEl.style.display = 'none';
+  }
+}
+</script>
+
+</body>
+</html>
