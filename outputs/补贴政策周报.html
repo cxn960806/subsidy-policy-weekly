@@ -29,9 +29,9 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
 .filter-tag:hover { border-color:#9CA3AF; }
 .filter-tag.active { background:#185FA5; color:#fff; border-color:#185FA5; }
 
-.alert-banner { background:#F0FDF4; border:0.5px solid #A7F3D0; border-radius:10px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:flex-start; gap:10px; }
-.alert-banner .alert-dot { width:8px; height:8px; border-radius:50%; background:#10B981; flex-shrink:0; margin-top:6px; }
-.alert-banner .alert-text { font-size:13px; color:#065F46; }
+.alert-banner { background:#FEF2F2; border:0.5px solid #FECACA; border-radius:10px; padding:14px 20px; margin-bottom:16px; display:flex; align-items:flex-start; gap:10px; }
+.alert-banner .alert-dot { width:8px; height:8px; border-radius:50%; background:#EF4444; flex-shrink:0; margin-top:6px; }
+.alert-banner .alert-text { font-size:13px; color:#991B1B; }
 .alert-banner .alert-count { font-weight:600; }
 
 .policy-list { display:flex; flex-direction:column; gap:12px; margin-bottom:24px; }
@@ -70,6 +70,7 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
 .tag-watch { background:#FEF3C7; color:#D97706; }
 .tag-normal { background:#D1FAE5; color:#059669; }
 .tag-region { background:#E0F2FE; color:#0369A1; }
+.tag-new { background:#FEE2E2; color:#DC2626; }
 
 .match-badge { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; padding:3px 10px; border-radius:14px; white-space:nowrap; }
 .match-badge.match-high { background:#D1FAE5; color:#065F46; }
@@ -96,8 +97,8 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
 <div class="report-header">
   <h1>企业补贴政策周报</h1>
   <div class="meta">
-    <span>第 2 期（更新版）</span>
-    <span>生成时间：2026年7月28日</span>
+    <span>第 3 期</span>
+    <span>生成时间：2026年8月3日</span>
     <span>覆盖范围：全国 + 浙江省 + 杭州市西湖区</span>
   </div>
 </div>
@@ -105,22 +106,22 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
 <div class="stats-row">
   <div class="stat-card">
     <div class="label">本期收录</div>
-    <div class="value">10</div>
+    <div class="value">12</div>
     <div class="label">条政策</div>
   </div>
   <div class="stat-card danger">
-    <div class="label">年内到期</div>
-    <div class="value">3</div>
-    <div class="label">需安排申报</div>
+    <div class="label">即将截止</div>
+    <div class="value">2</div>
+    <div class="label">14天内到期</div>
   </div>
   <div class="stat-card warning">
     <div class="label">新发布</div>
     <div class="value">5</div>
-    <div class="label">本年度政策</div>
+    <div class="label">近一个月新政策</div>
   </div>
   <div class="stat-card success">
     <div class="label">长期有效</div>
-    <div class="value">5</div>
+    <div class="value">6</div>
     <div class="label">条政策</div>
   </div>
 </div>
@@ -135,65 +136,43 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
   <div class="filter-tag" onclick="filterPolicies('贷款贴息', this)">贷款贴息</div>
   <div class="filter-tag" onclick="filterPolicies('认定/研发', this)">认定/研发</div>
   <div class="filter-tag" onclick="filterPolicies('服务/创业', this)">服务/创业</div>
+  <div class="filter-tag" onclick="filterPolicies('软件/数字化', this)">软件/数字化</div>
 </div>
 
 <div class="alert-banner">
   <div class="alert-dot"></div>
-  <div class="alert-text">本期收录 <span class="alert-count">10</span> 条现行有效政策，覆盖全国·浙江·杭州西湖区。其中 <span class="alert-count">3</span> 条全国性政策期限至 2026 年 12 月 31 日，<span class="alert-count">3</span> 条为西湖区直接发布的区级政策，匹配度最高。建议优先关注。</div>
+  <div class="alert-text">本期收录 <span class="alert-count">12</span> 条政策，其中 <span class="alert-count">2</span> 条即将截止（8月14日/19日），请优先安排申报！<span class="alert-count">3</span> 条为西湖区直接发布的区级政策，匹配度最高。</div>
 </div>
 
 <div class="policy-list" id="policyList">
 
-<!-- 1. 西湖区推动经济高质量发展 -->
-<div class="policy-card" data-tags="综合减负">
+<!-- 1. 杭州市软件和信息技术服务业政策申报 - 紧急 -->
+<div class="policy-card" data-tags="软件/数字化">
   <div class="card-body">
-    <div class="indicator normal"></div>
+    <div class="indicator urgent"></div>
     <div class="card-main">
       <div class="tag-row">
-        <span class="tag tag-mix">综合减负</span>
-        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-rd">软件/数字化</span>
+        <span class="tag tag-urgent">11天后截止</span>
         <span class="tag tag-region">杭州西湖区</span>
+        <span class="tag tag-new">新发布</span>
         <span class="match-badge match-high">★★★★★ 95%</span>
       </div>
-      <div class="policy-num">西政发〔2026〕XX 号</div>
-      <div class="card-title">西湖区推动经济高质量发展的若干政策（2026年版）</div>
-      <div class="card-source"><span>杭州市西湖区人民政府</span><span>2026年3月9日发布</span></div>
+      <div class="policy-num">西湖区经信局 2026年7月14日发布</div>
+      <div class="card-title">杭州市新一轮推进软件和信息技术服务业高质量发展政策申报（西湖区）</div>
+      <div class="card-source"><span>杭州市西湖区经信局</span><span>2026年7月14日发布</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>关键措施：</strong>深入实施"春晖计划"，为企业降成本减负担；推动社会综合融资成本稳中有降；推进专精特新企业梯度培育</div>
-        <div class="detail-item"><strong>研发支持：</strong>科技型企业规上/规下企业新增研发费用分别超200万/50万元的，按新增研发费给予一定支持</div>
-        <div class="detail-item"><strong>数字化转型：</strong>支持人工智能、商业航天、具身智能、集成电路、高端软件等产业集群；对AI工厂给予分档奖励</div>
-        <div class="detail-item"><strong>特别提示：</strong>注册地在西湖区的企业直接对口，享受区级配套政策叠加省市政策</div>
+        <div class="detail-item"><strong>协同创新补助：</strong>联合企业/高校攻关基础软件、工业软件，结合AI、低空经济等方向，每年不超过5个项目，按软硬件投入30%给予最高1000万元补助</div>
+        <div class="detail-item"><strong>研发投入补助：</strong>营收增速超10%且研发占营收超10%的企业，研发超10%部分按10%（最高500万）或15%（基础/工业软件，最高1000万）补助</div>
+        <div class="detail-item"><strong>认证奖励：</strong>首次通过CSMM四级/五级分别奖励30万/50万元；DCMM同标准</div>
+        <div class="detail-item"><strong>截止时间：</strong>线上申报8月14日截止，线下材料8月19日前提交区经信局</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://www.hzxh.gov.cn/col/col1229562124/art/2026/art_1fd9d6b74dae45e7a909f75291741c6f.html" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://www.hzxh.gov.cn/col/col1177815/art/2026/art_deb1b4039b004b788f473dbda8afef8b.html" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 2. 西湖区先进制造业大礼包 -->
-<div class="policy-card" data-tags="综合减负">
-  <div class="card-body">
-    <div class="indicator normal"></div>
-    <div class="card-main">
-      <div class="tag-row">
-        <span class="tag tag-mix">综合减负</span>
-        <span class="tag tag-normal">长期施行</span>
-        <span class="tag tag-region">杭州西湖区</span>
-        <span class="match-badge match-mid">★★★ 65%</span>
-      </div>
-      <div class="card-title">西湖区先进制造业"政策+基金+空间"三大礼包</div>
-      <div class="card-source"><span>杭州市西湖区人民政府</span><span>2026年1月发布</span></div>
-      <div class="card-details">
-        <div class="detail-item"><strong>制造业技改：</strong>总投资1000万元以上技改项目最高可获5000万元资助；一季度产值增量最高500万元激励</div>
-        <div class="detail-item"><strong>创业空间：</strong>2026年计划挂牌出让产业用地21宗、1018亩，新建产业园区及标准厂房投用</div>
-        <div class="detail-item"><strong>金融支持：</strong>区级科创直投基金约14亿元、26支子基金总规模171.81亿元，覆盖企业全生命周期</div>
-        <div class="detail-item"><strong>适用提示：</strong>偏制造业导向，教育培训企业适用度中等；如涉足教育科技产品研发则研发补贴可适用</div>
-      </div>
-    </div>
-  </div>
-  <div class="card-action"><a href="https://www.hzxcw.gov.cn/content_46861.html" target="_blank">查看政策原文 &rarr;</a></div>
-</div>
-
-<!-- 3. 失业保险稳岗返还 -->
+<!-- 2. 失业保险稳岗返还 -->
 <div class="policy-card" data-tags="稳岗补贴">
   <div class="card-body">
     <div class="indicator normal"></div>
@@ -201,23 +180,24 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
       <div class="tag-row">
         <span class="tag tag-sub">稳岗补贴</span>
         <span class="tag tag-normal">全年有效</span>
+        <span class="tag tag-region">全国</span>
         <span class="match-badge match-high">★★★★ 82%</span>
       </div>
-      <div class="policy-num">人社部发〔2026〕39 号</div>
+      <div class="policy-num">人社部发〔2026〕39号</div>
       <div class="card-title">失业保险稳岗返还政策（2026年延续）</div>
       <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>补贴金额：</strong>中小微企业按上年度实际缴纳失业保险费的 60% 返还；大型企业 30%</div>
-        <div class="detail-item"><strong>适用条件：</strong>参保缴费满 12 个月，不裁员或裁员率不高于城镇调查失业率控制目标（30人以下企业裁员率不高于 20%）</div>
+        <div class="detail-item"><strong>补贴金额：</strong>中小微企业按上年度实际缴纳失业保险费的60%返还；大型企业30%</div>
+        <div class="detail-item"><strong>适用条件：</strong>参保缴费满12个月，不裁员或裁员率不高于全国城镇调查失业率控制目标（30人以下企业裁员率不高于20%）</div>
         <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
         <div class="detail-item"><strong>申请方式：</strong>"免申即享"，通过后台数据比对主动推送确认</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://chinajob.mohrss.gov.cn/c/2026-07-27/577162.shtml" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 4. 一次性扩岗补助 -->
+<!-- 3. 一次性扩岗补助 -->
 <div class="policy-card" data-tags="人才/扩岗">
   <div class="card-body">
     <div class="indicator normal"></div>
@@ -225,23 +205,24 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
       <div class="tag-row">
         <span class="tag tag-she">人才/扩岗</span>
         <span class="tag tag-normal">全年有效</span>
+        <span class="tag tag-region">全国</span>
         <span class="match-badge match-mid">★★★ 58%</span>
       </div>
-      <div class="policy-num">人社部发〔2026〕39 号（同一文件）</div>
+      <div class="policy-num">人社部发〔2026〕39号（同一文件）</div>
       <div class="card-title">一次性扩岗补助政策（2026年延续）</div>
       <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>补贴金额：</strong>每招用 1 人不超过 1,500 元</div>
-        <div class="detail-item"><strong>适用条件：</strong>招用毕业年度及离校两年内未就业高校毕业生、16-24岁登记失业青年，签劳动合同并足额缴纳社保 3 个月以上</div>
+        <div class="detail-item"><strong>补贴金额：</strong>每招用1人不超过1,500元</div>
+        <div class="detail-item"><strong>适用条件：</strong>招用毕业年度及离校两年内未就业高校毕业生、16-24岁登记失业青年，签劳动合同并足额缴纳社保3个月以上</div>
         <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
         <div class="detail-item"><strong>申请方式：</strong>向参保地人社部门申请，部分地区支持线上办理</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://chinajob.mohrss.gov.cn/c/2026-07-27/577162.shtml" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 5. 技能提升补贴 -->
+<!-- 4. 技能提升补贴 -->
 <div class="policy-card" data-tags="培训补贴">
   <div class="card-body">
     <div class="indicator normal"></div>
@@ -249,46 +230,75 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
       <div class="tag-row">
         <span class="tag tag-train">培训补贴</span>
         <span class="tag tag-normal">全年有效</span>
+        <span class="tag tag-region">全国</span>
         <span class="match-badge match-low">★★ 45%</span>
       </div>
-      <div class="policy-num">人社部发〔2026〕39 号（同一文件）</div>
+      <div class="policy-num">人社部发〔2026〕39号（同一文件）</div>
       <div class="card-title">技能提升补贴政策（2026年优化版）</div>
       <div class="card-source"><span>人社部、教育部、财政部、国家税务总局</span><span>2026年6月18日发布</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>补贴金额：</strong>参保职工取得证书可申领 1 次补贴；获多项急需紧缺工种证书可额外增加 2 次</div>
-        <div class="detail-item"><strong>适用条件（2026年新变化·突出"证岗相适"）：</strong>证书对应职业中类与所在企业行业一致；或为数字职业（标"S"）证书；或为绿色职业（标"L"）证书；或列入当地急需紧缺职业（工种）目录</div>
+        <div class="detail-item"><strong>补贴金额：</strong>初级1000元、中级1500元、高级2000元；获多项急需紧缺工种证书可额外增加2次</div>
+        <div class="detail-item"><strong>适用条件（2026年新变化·突出"证岗相适"）：</strong>证书对应职业中类与所在企业行业一致；或为数字职业（标"S"）证书；或为绿色职业（标"L"）证书；或列入当地急需紧缺职业目录</div>
         <div class="detail-item"><strong>截止时间：</strong>2026年12月31日</div>
         <div class="detail-item"><strong>特别提示：</strong>教育科技公司的技术岗位考取数字职业证书最契合，"证岗相适"条件容易满足</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://www.gov.cn/zhengce/zhengceku/202607/content_7074139.htm" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://chinajob.mohrss.gov.cn/c/2026-07-27/577162.shtml" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 6. 浙江省减负降本 -->
-<div class="policy-card" data-tags="综合减负">
+<!-- 5. 杭州市软件产业高质量发展政策 -->
+<div class="policy-card" data-tags="软件/数字化">
   <div class="card-body">
     <div class="indicator normal"></div>
     <div class="card-main">
       <div class="tag-row">
-        <span class="tag tag-mix">综合减负</span>
+        <span class="tag tag-rd">软件/数字化</span>
         <span class="tag tag-normal">长期施行</span>
-        <span class="match-badge match-high">★★★★★ 92%</span>
+        <span class="tag tag-region">杭州市</span>
+        <span class="tag tag-new">新政策</span>
+        <span class="match-badge match-high">★★★★★ 90%</span>
       </div>
-      <div class="card-title">浙江省企业减负降本综合政策（2026年版）</div>
-      <div class="card-source"><span>浙江省人民政府办公厅</span><span>2026年1月5日发布</span></div>
+      <div class="policy-num">杭政办函〔2026〕9号</div>
+      <div class="card-title">杭州市新一轮推进软件和信息技术服务业高质量发展若干政策</div>
+      <div class="card-source"><span>杭州市人民政府办公厅</span><span>2026年3月27日印发，5月27日起施行</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>用工成本：</strong>企业拨缴上级工会经费缓减 20%（2025-2026）；给予职业培训补贴；支持建设宿舍型保障性租赁住房</div>
-        <div class="detail-item"><strong>融资成本：</strong>政府性融资担保费率降至 1% 以下，对小微企业差异化费率；拓展无还本续贷至中型企业</div>
-        <div class="detail-item"><strong>其他优惠：</strong>160千瓦以下中小企业低压接入零投资；涉企专项资金加快兑付；提高政府采购中小企业预留份额</div>
-        <div class="detail-item"><strong>截止时间：</strong>2026年1月12日起施行，多项措施延续至 2027 年底</div>
+        <div class="detail-item"><strong>协同创新：</strong>每年不超过5个项目，按软硬件投入30%给予最高1000万元补助</div>
+        <div class="detail-item"><strong>研发投入：</strong>营收增速超10%且研发占营收超10%的前50家企业，超10%部分按10%（最高500万）/15%（基础工业软件最高1000万）补助</div>
+        <div class="detail-item"><strong>信创产品：</strong>通过国家安全可靠测评每个产品最高100万元奖励，单企累计不超300万</div>
+        <div class="detail-item"><strong>有效期：</strong>2026年5月27日至2028年12月31日</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://hqpt.jxt.zj.gov.cn/zjhqpt/views/policy/detail.html?id=60877" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://z.hangzhou.com.cn/2020/hzrmzfgb/content/content_9211069.html" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 7. 杭州市服务券 -->
+<!-- 6. 杭州市专精特新名城政策 -->
+<div class="policy-card" data-tags="认定/研发">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-rd">认定/研发</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-region">杭州市</span>
+        <span class="match-badge match-high">★★★★ 78%</span>
+      </div>
+      <div class="policy-num">杭政办函〔2025〕65号</div>
+      <div class="card-title">杭州市深入打造全国专精特新名城若干措施</div>
+      <div class="card-source"><span>杭州市人民政府办公厅</span><span>2025年12月28日印发，2026年2月27日起施行</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>认定奖励：</strong>首次认定专精特新"小巨人"100万元、省隐形冠军100万元、专精特新中小企业20万元</div>
+        <div class="detail-item"><strong>专精特新贷：</strong>按实际贷款金额最高1%年利率贴息，单企每年最高20万元；政策性担保费率不高于5‰</div>
+        <div class="detail-item"><strong>创新成长：</strong>每年重点支持不超过100家创新型中小企业，2年内给予最高50万元奖励</div>
+        <div class="detail-item"><strong>有效期：</strong>2026年2月27日至2028年12月31日</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://zfgb.hangzhou.gov.cn/mobile_detail.shtml?a=0.3364276778705&doc_id=530144" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 7. 杭州市中小微企业服务券 -->
 <div class="policy-card" data-tags="服务/创业">
   <div class="card-body">
     <div class="indicator watch"></div>
@@ -296,15 +306,16 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
       <div class="tag-row">
         <span class="tag tag-cert">服务/创业</span>
         <span class="tag tag-watch">需关注</span>
+        <span class="tag tag-region">杭州市</span>
         <span class="match-badge match-high">★★★★ 82%</span>
       </div>
-      <div class="policy-num">杭经信联中小〔2026〕34 号</div>
+      <div class="policy-num">杭经信联中小〔2026〕34号</div>
       <div class="card-title">杭州市中小微企业服务券管理办法（2026年升级版）</div>
       <div class="card-source"><span>杭州市经信局、财政局</span><span>2026年5月13日发布，6月25日启动申领</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>补贴方式：</strong>2026年总额 1,000 万元，114家服务机构 257 个服务产品已上架"杭企服"平台</div>
-        <div class="detail-item"><strong>补贴额度：</strong>中小企业 5,000 元/年；创新型中小企业 10,000 元/年；省专精特新/小巨人 20,000 元/年</div>
-        <div class="detail-item"><strong>适用范围：</strong>可用于数字赋能、管理咨询、融资支持、科技创新、人才培育等 10 类服务采购</div>
+        <div class="detail-item"><strong>总额度：</strong>2026年总额1,000万元，114家服务机构257个服务产品已上架"杭企服"平台</div>
+        <div class="detail-item"><strong>梯度额度：</strong>中小企业5,000元/年；创新型中小企业10,000元/年；省专精特新/小巨人20,000元/年</div>
+        <div class="detail-item"><strong>适用范围：</strong>数字赋能、管理咨询、融资支持、科技创新、知识产权、人才培育等10类服务</div>
         <div class="detail-item"><strong>申请方式：</strong>全程线上，"杭企服"平台发放、使用和兑付（先用先得、用完为止）</div>
       </div>
     </div>
@@ -312,81 +323,135 @@ body { font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; bac
   <div class="card-action"><a href="https://credit.zj.gov.cn/col/col1229636089/art/2026/art_3e0fa9b0c2b6462dbaf5fe1cb0148b34.html" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 8. 杭州创业担保贷款 -->
+<!-- 8. 杭州科创企业融资贴息消费券 -->
 <div class="policy-card" data-tags="贷款贴息">
   <div class="card-body">
-    <div class="indicator normal"></div>
+    <div class="indicator watch"></div>
     <div class="card-main">
       <div class="tag-row">
         <span class="tag tag-loan">贷款贴息</span>
-        <span class="tag tag-normal">长期施行</span>
-        <span class="match-badge match-high">★★★★ 78%</span>
+        <span class="tag tag-watch">需关注</span>
+        <span class="tag tag-region">杭州市</span>
+        <span class="tag tag-new">新政策</span>
+        <span class="match-badge match-high">★★★★ 80%</span>
       </div>
-      <div class="card-title">杭州市创业担保贷款及贴息政策</div>
-      <div class="card-source"><span>杭州市人社局、财政局</span><span>2026年4月更新执行</span></div>
+      <div class="card-title">杭州市科创企业融资贴息消费券</div>
+      <div class="card-source"><span>杭州市科技局、财政局</span><span>2026年3月18日发布，4月1日起申领</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>贷款额度：</strong>个人最高 50 万元；小微企业按招用重点人群人数×20 万元计算，最高 300 万元</div>
-        <div class="detail-item"><strong>贴息力度：</strong>重点人群（在校生/毕业生等）全额贴息；小微企业入驻孵化基地的按 LPR 全额贴息，其他按 LPR-150BP 以上部分贴息</div>
-        <div class="detail-item"><strong>期限：</strong>贴息累计不超过 3 年，次数不超过 3 次。贷款利率不超过 LPR+50BP</div>
-        <div class="detail-item"><strong>申请方式：</strong>先资格认定→银行放款→"先付后贴"，支付宝"就业创业一张图"可查经办网点</div>
+        <div class="detail-item"><strong>总额度：</strong>5,000万元，先到先得、领完为止</div>
+        <div class="detail-item"><strong>贴息力度：</strong>最高享受贷款利息25%的财政贴息</div>
+        <div class="detail-item"><strong>券面额度：</strong>5,000元至20万元共10个档次，每笔贷款最多使用3张</div>
+        <div class="detail-item"><strong>核销截止：</strong>2027年6月30日前核销使用，逾期作废</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://hznews.hangzhou.com.cn/jingji/content/2026-04/10/content_9203957.htm" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://zj.people.com.cn/BIG5/n2/2026/0319/c186327-41527604.html" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 9. 杭州市创业场地扶持 -->
-<div class="policy-card" data-tags="服务/创业">
+<!-- 9. 浙江省集成电路和软件产业政策 -->
+<div class="policy-card" data-tags="软件/数字化">
   <div class="card-body">
     <div class="indicator normal"></div>
     <div class="card-main">
       <div class="tag-row">
-        <span class="tag tag-ent">服务/创业</span>
+        <span class="tag tag-rd">软件/数字化</span>
         <span class="tag tag-normal">长期施行</span>
-        <span class="match-badge match-mid">★★★ 55%</span>
+        <span class="tag tag-region">浙江省</span>
+        <span class="tag tag-new">新政策</span>
+        <span class="match-badge match-mid">★★★ 65%</span>
       </div>
-      <div class="policy-num">杭人社发〔2025〕XX 号</div>
-      <div class="card-title">杭州市创业场地扶持办法（2026年2月1日起施行）</div>
-      <div class="card-source"><span>杭州市人力资源和社会保障局</span><span>2026年2月1日起施行</span></div>
+      <div class="card-title">新时期促进浙江省集成电路产业和软件产业高质量发展若干政策</div>
+      <div class="card-source"><span>浙江省人民政府办公厅</span><span>2026年7月23日发布</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>创业陪跑空间：</strong>入驻经认定的创业陪跑空间，最高享 3 年 50 平方米以内场地租金补贴，最高 3 元/平方米·天</div>
-        <div class="detail-item"><strong>园外创业补贴：</strong>未入驻陪跑空间的创业者也可申请园外创业场地租金补贴，条件略严格</div>
-        <div class="detail-item"><strong>适用条件：</strong>重点人群（大学生/失业/退役等）创办经营实体，创业者持股≥30%，需提供房租支付凭证</div>
-        <div class="detail-item"><strong>适用提示：</strong>如果是自有场地则无需此项；如果在陪跑空间内租赁则高匹配</div>
+        <div class="detail-item"><strong>科技攻关：</strong>每年组织"尖兵""领雁"研发攻关项目50个以上，安排专项资金支持</div>
+        <div class="detail-item"><strong>产业链协同：</strong>每年组织产业链协同创新、生产制造转型项目10个以上，统筹专项资金支持</div>
+        <div class="detail-item"><strong>首台套支持：</strong>半导体首台套装备、首批次新材料、首版次软件产品享受首台套支持政策</div>
+        <div class="detail-item"><strong>适用提示：</strong>教育科技公司若自主研发教学软件/平台，首版次软件产品可适用</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://zfgb.hangzhou.gov.cn/15/112220253/t126220253124/530040.shtml" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://zj87.jxt.zj.gov.cn/zjhqpt/views/policy-zw/detail.html?id=62351" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
-<!-- 10. 科技型中小企业 / 专精特新认定 -->
+<!-- 10. 浙江省经济高质量发展政策2026版 -->
+<div class="policy-card" data-tags="综合减负">
+  <div class="card-body">
+    <div class="indicator normal"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-mix">综合减负</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-region">浙江省</span>
+        <span class="match-badge match-high">★★★★★ 92%</span>
+      </div>
+      <div class="policy-num">浙政发〔2026〕6号</div>
+      <div class="card-title">浙江省推动经济高质量发展若干政策（2026年版）</div>
+      <div class="card-source"><span>浙江省人民政府</span><span>2026年发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>AI+标杆场景：</strong>打造50个以上"人工智能+"标杆场景，单个项目省市县合计最高500万元支持</div>
+        <div class="detail-item"><strong>科创平台：</strong>新认定省级中试平台10个，单个最高1000万补助；升级国家级奖励3000万</div>
+        <div class="detail-item"><strong>创新联合体：</strong>省级创新联合体重大科技项目，省市县合计最高3000万元补助</div>
+        <div class="detail-item"><strong>科技金融：</strong>力争科技贷款余额超4.2万亿元，科技保险保障额达7200亿元</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://www.zj.gov.cn/cms_files/filemanager/1567290/attach/20262/F4002A4E594067BDDD3FD1CBE6D2CDA1.pdf" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 11. 西湖区科技创新若干措施 -->
 <div class="policy-card" data-tags="认定/研发">
   <div class="card-body">
     <div class="indicator normal"></div>
     <div class="card-main">
       <div class="tag-row">
         <span class="tag tag-rd">认定/研发</span>
-        <span class="tag tag-normal">常年申报</span>
-        <span class="match-badge match-high">★★★★ 75%</span>
+        <span class="tag tag-normal">长期施行</span>
+        <span class="tag tag-region">杭州西湖区</span>
+        <span class="match-badge match-high">★★★★★ 95%</span>
       </div>
-      <div class="policy-num">国科发〔2026〕/ 杭政函〔2026〕XX 号</div>
-      <div class="card-title">国家科技型中小企业评价 + 杭州市专精特新名城政策</div>
-      <div class="card-source"><span>科技部 / 杭州市政府</span><span>2026年度·常年受理</span></div>
+      <div class="policy-num">西科〔2024〕1号（修订版）</div>
+      <div class="card-title">西湖区加快科技创新塑造经济发展新优势若干措施（修订版）</div>
+      <div class="card-source"><span>杭州市西湖区科学技术局</span><span>2025年1月发布修订版</span></div>
       <div class="card-details">
-        <div class="detail-item"><strong>税收优惠：</strong>认定为国家科技型中小企业可享研发费用加计扣除 100%；亏损结转年限由 5 年延长至 10 年</div>
-        <div class="detail-item"><strong>杭州专精特新奖励：</strong>首次认定省专精特新企业奖励 20 万元；省隐形冠军 100 万元；专精特新"小巨人"100 万元</div>
-        <div class="detail-item"><strong>高新技术企业：</strong>杭州市对首次认定高企奖励最高 20 万元，重新认定 10 万元；"新雏鹰"企业 50 万元</div>
-        <div class="detail-item"><strong>特别提示：</strong>教育培训企业若有自主研发的教学系统/技术平台，建议申报科技型中小企业入库</div>
+        <div class="detail-item"><strong>高企奖励：</strong>首次认定高企最高20万元；重新认定最高10万元；首次上规模高企再给30万元</div>
+        <div class="detail-item"><strong>研发平台：</strong>新认定国家重点实验室150万、省级100万；国家/省/市级企业研发中心分别100万/50万/20万</div>
+        <div class="detail-item"><strong>规上高企：</strong>规上工业企业首次被认定为高企的，给予最高60万元奖励</div>
+        <div class="detail-item"><strong>有效期：</strong>施行至2026年12月31日</div>
       </div>
     </div>
   </div>
-  <div class="card-action"><a href="https://www.hzxcw.gov.cn/content_46615.html" target="_blank">查看政策原文 &rarr;</a></div>
+  <div class="card-action"><a href="https://www.hzxh.gov.cn/art/2025/1/13/art_1229312739_1848986.html" target="_blank">查看政策原文 &rarr;</a></div>
+</div>
+
+<!-- 12. 杭州市模型备案奖励 -->
+<div class="policy-card" data-tags="认定/研发">
+  <div class="card-body">
+    <div class="indicator urgent"></div>
+    <div class="card-main">
+      <div class="tag-row">
+        <span class="tag tag-rd">认定/研发</span>
+        <span class="tag tag-urgent">已截止</span>
+        <span class="tag tag-region">杭州市</span>
+        <span class="tag tag-new">新政策</span>
+        <span class="match-badge match-low">★★ 40%</span>
+      </div>
+      <div class="card-title">杭州市模型备案奖励项目申报</div>
+      <div class="card-source"><span>杭州市经信局（数字经济局）</span><span>2026年7月发布</span></div>
+      <div class="card-details">
+        <div class="detail-item"><strong>申报对象：</strong>拥有通过中央网信办生成式人工智能服务备案模型的企业</div>
+        <div class="detail-item"><strong>备案要求：</strong>模型须在2024年8月19日后完成备案</div>
+        <div class="detail-item"><strong>截止时间：</strong>企业申报已于7月31日截止，区县报送8月5日截止</div>
+        <div class="detail-item"><strong>适用提示：</strong>若有自研AI大模型产品，可关注下一年度申报窗口</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-action"><a href="https://jxj.hangzhou.gov.cn/col/col1229252271/art/2026/art_52ef9f4cea5741f8880ff6733e984c90.html" target="_blank">查看政策原文 &rarr;</a></div>
 </div>
 
 </div>
 
 <div class="report-footer">
-  <strong>说明：</strong>本报告由自动化系统采集生成，数据来源为人社部、科技部、国家税务总局、浙江省人民政府、杭州市经信局、杭州市人社局、西湖区人民政府等官方渠道。<br>
+  <strong>说明：</strong>本报告由自动化系统采集生成，数据来源为人社部、科技部、浙江省人民政府、杭州市经信局、杭州市科技局、杭州市融资担保集团、西湖区人民政府等官方渠道。<br>
   <strong>筛选范围：</strong>地区 = 全国 + 浙江省 + 杭州市西湖区 | 行业画像 = 教育科技 | 企业类型 = 中小企业。（已排除非杭州西湖区的地方性政策）<br>
   <strong>匹配度说明：</strong>★★★★★（90%+）= 直接对口，★★★★（75-89%）= 高度匹配，★★★（50-74%）= 可触发，★★（<50%）= 间接关联。<br>
   <strong>免责提示：</strong>政策内容以官方原文为准，请以本报告提供的官方原文链接核实后开展申报操作。
